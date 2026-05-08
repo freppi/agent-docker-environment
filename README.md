@@ -4,11 +4,13 @@
 - Claude
 - Codex
 
-
 ## Environment variables
 Replace .env.example to .env
 
 Set or add configs that needs to be exported to containers.
+
+# Create folder structure
+run init-script (init.sh or init.ps1)
 
 ## Build and Run
 docker compose build
