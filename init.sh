@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
+
+#!/usr/bin/env bash
 set -euo pipefail
 
-
 echo "Setting up workspace structure"
-WORKSPACE_DIR="/workspace"
+
+WORKSPACE_DIR="./workspace"
 REPO_DIR="$WORKSPACE_DIR/repo"
 SPECS_DIR="$WORKSPACE_DIR/specs"
 NOTES_DIR="$WORKSPACE_DIR/notes"
 
-
-
 mkdir -p "$REPO_DIR" "$SPECS_DIR" "$NOTES_DIR"
+
+echo "Workspace created"
+
 
 #export ANTHROPIC_MODEL="$ANTHROPIC_MODEL"
 #export ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL"
@@ -22,5 +25,4 @@ mkdir -p "$REPO_DIR" "$SPECS_DIR" "$NOTES_DIR"
 # --------------------------------------------------
 # Done
 # --------------------------------------------------
-
-exec sleep infinity
+echo "done"
