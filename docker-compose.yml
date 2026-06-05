@@ -1,43 +1,48 @@
 services:
-  react:
+  dev:
+    profiles:
+      - dev
     build:
       context: .
-      dockerfile: dockerfiles/Dockerfile.react
+      dockerfile: dockerfiles/Dockerfile.dev
 
-    image: react-runner
-    container_name: react-dev
+    image: dev-runner
+    container_name: dev-runner
 
     stdin_open: true
     tty: true
+    init: true
 
     env_file:
       - .env
 
-    volumes:
-      - ./workspace:/workspace
-
+    user: "1000:1000"
     working_dir: /workspace
+    read_only: true
+    pids_limit: 256
+    mem_limit: 6g
 
-  dotnet:
-    build:
-      context: .
-      dockerfile: dockerfiles/Dockerfile.dotnet
+    security_opt:
+      - no-new-privileges:true
 
-    image: dotnet-runner
-    container_name: dotnet-dev
+    cap_drop:
+      - ALL
 
-    stdin_open: true
-    tty: true
-
-    env_file:
-      - .env
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=512m
+      - /home/node/.cache:rw,nosuid,nodev,size=512m
+      - /home/node/.local/share:rw,nosuid,nodev,size=256m
 
     volumes:
-      - ./workspace:/workspace
-
-    working_dir: /workspace
+      - ./workspace:/workspace:rw
+      - dev-npm-cache:/home/node/.npm
+      - dev-pnpm-store:/home/node/.pnpm-store
+      - dev-nuget-cache:/home/node/.nuget/packages
+      - ./workspace/.codex/dev:/home/node/.codex:rw
 
   specs:
+    profiles:
+      - specs
     build:
       context: .
       dockerfile: dockerfiles/Dockerfile.spec
@@ -47,8 +52,35 @@ services:
 
     stdin_open: true
     tty: true
+    init: true
+
+    env_file:
+      - .env
+
+    user: "1000:1000"
+    working_dir: /workspace/specs
+    read_only: true
+    pids_limit: 128
+    mem_limit: 2g
+
+    security_opt:
+      - no-new-privileges:true
+
+    cap_drop:
+      - ALL
+
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=256m
+      - /home/node/.cache:rw,nosuid,nodev,size=256m
+      - /home/node/.local/share:rw,nosuid,nodev,size=128m
 
     volumes:
-      - ./workspace:/workspace
+      - ./workspace/specs:/workspace/specs:rw
+      - ./workspace/notes:/workspace/notes:rw
+      - ./workspace/repo:/workspace/repo:ro
+      - ./workspace/.codex/specs:/home/node/.codex:rw
 
-    working_dir: /workspace
+volumes:
+  dev-npm-cache:
+  dev-pnpm-store:
+  dev-nuget-cache:
