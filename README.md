@@ -77,14 +77,13 @@ docker compose --profile specs run --rm specs bash
 
 ## First-Time Setup
 
-Create the local Codex state directories before the first run:
+Initialize the workspace before the first run:
 
 ```bash
-mkdir -p workspace/.codex/dev workspace/.codex/specs
-mkdir -p workspace/.claude/dev workspace/.claude/specs
-chown -R 1000:1000 workspace/.codex
-chown -R 1000:1000 workspace/.claude
+./init.sh
 ```
+
+This creates the expected directory layout, including local state directories for Codex and Claude. On Linux, it also attempts to set ownership for the `.codex/` and `.claude/` directories to `1000:1000`.
 
 This only needs to be done once per new workspace or after deleting the `.codex/` or `.claude/` directories.
 
@@ -99,13 +98,10 @@ docker compose -f docker-compose.yml -f docker-compose.windows.yml --profile spe
 
 The Windows override removes the explicit `user: "1000:1000"` mapping, because Linux UID/GID assumptions do not translate cleanly to Docker Desktop bind mounts on Windows.
 
-For first-time setup on Windows, create the directories but skip `chown`:
+For first-time setup on Windows, run:
 
 ```bash
-mkdir workspace\.codex\dev
-mkdir workspace\.codex\specs
-mkdir workspace\.claude\dev
-mkdir workspace\.claude\specs
+pwsh -File .\init.ps1
 ```
 
 ## Notes
