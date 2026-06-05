@@ -39,6 +39,7 @@ services:
       - dev-pnpm-store:/home/node/.pnpm-store
       - dev-nuget-cache:/home/node/.nuget/packages
       - ./workspace/.codex/dev:/home/node/.codex:rw
+      - ./workspace/.claude/dev:/home/node/.claude:rw
 
   specs:
     profiles:
@@ -79,6 +80,7 @@ services:
       - ./workspace/notes:/workspace/notes:rw
       - ./workspace/repo:/workspace/repo:ro
       - ./workspace/.codex/specs:/home/node/.codex:rw
+      - ./workspace/.claude/specs:/home/node/.claude:rw
 
 volumes:
   dev-npm-cache:

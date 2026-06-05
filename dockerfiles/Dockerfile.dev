@@ -37,6 +37,8 @@ RUN npm install -g pnpm \
 RUN mkdir -p \
     /workspace \
     /tmp/codex \
+    /home/node/.claude \
+    /home/node/.codex \
     /home/node/.cache \
     /home/node/.local/share \
     /home/node/.npm \
